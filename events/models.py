@@ -1,6 +1,8 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -45,6 +47,7 @@ class Event(models.Model):
         (FULLNESS_FULL, FULLNESS_LEGEND_FULL),
     )
 
+    logo = models.ImageField(upload_to='events/event', blank=True, null=True,)
     title = models.CharField(max_length=200, default='', verbose_name='Название')
     description = models.TextField(default='', verbose_name='Описание')
     date_start = models.DateTimeField(verbose_name='Дата начала')
@@ -62,6 +65,9 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('events:event_detail', args=[str(self.pk)])
+
     def display_enroll_count(self):
         return self.enrolls.count()
 
@@ -78,6 +84,19 @@ class Event(models.Model):
         return f'{places_left} ({fullness})'
 
     display_places_left.short_description = 'Осталось мест'
+
+    @property
+    def rate(self):
+        reviews_objects = self.reviews.all()
+        counter = 0
+        for review in reviews_objects:
+            counter += review.rate
+
+        return round(counter / reviews_objects.count(), 1)
+
+    @property
+    def logo_url(self):
+        return self.logo.url if self.logo else f'{settings.STATIC_URL}images/svg-icon/event.svg'
 
 
 class Enroll(models.Model):

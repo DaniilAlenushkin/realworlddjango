@@ -1,0 +1,54 @@
+{% load static %}
+    <div class="leftbar">
+        <div class="logobar">
+            <a href="index.html" class="logo logo-large">
+                <img src="{% static 'images/svg-icon/logo.svg' %}" alt="logo" style="height: 40px">
+            </a>
+        </div>
+        <ul class="vertical-menu" id="vertical-menu">
+            <li class="vertical-menu-item">
+                <span>Главное</span>
+                <ul class="vertical-submenu">
+                    <li><a href="event_list.html">События</a></li>
+                    <li><a href="mail.html">Подписчики</a></li>
+                </ul>
+            </li>
+            <li class="vertical-menu-item">
+                <span>Аккаунт</span>
+                <ul class="vertical-submenu">
+                    <li><a href="profile.html">Мой аккаунт</a></li>
+                    <li><a href="#">Изменить пароль</a></li>
+                    <li><a href="#">Сбросить пароль</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+<!-- menu for mobile -->
+    <div class="topbar-mobile">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="mobile-logobar" style="max-width: 40px">
+                    <a href="#" class="mobile-logo">
+                        <img src="{% static 'images/svg-icon/logo.svg' %}" class="img-fluid" alt="logo">
+                    </a>
+                </div>
+                <div class="mobile-togglebar">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <div class="menubar">
+                                <a class="menu-hamburger" href="#" id="menu-hamburger">
+                                    <img src="{% static 'images/svg-icon/collapse.svg' %}"
+                                         class="img-fluid menu-hamburger-collapse"
+                                         alt="collapse">
+                                    <img src="{% static 'images/svg-icon/close.svg' %}"
+                                         class="img-fluid menu-hamburger-close"
+                                         alt="close">
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-md-none" style="height: 90px"></div>
