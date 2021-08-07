@@ -21,6 +21,9 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include('events.urls')),
+]
+
+urlpatterns += [
     path('api/events/', include('events.urls_api')),
 ]
 

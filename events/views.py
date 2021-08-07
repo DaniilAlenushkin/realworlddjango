@@ -22,7 +22,12 @@ def event_detail(request, pk):
     template_name = 'events/event_detail.html'
     event = get_object_or_404(Event, pk=pk)
     places_left = event.participants_number - event.enrolls.count()
-    fullness_percent = int((event.enrolls.count() / event.participants_number) * 100)
+
+    try:
+        fullness_percent = int((event.enrolls.count() / event.participants_number) * 100)
+    except ZeroDivisionError:
+        fullness_percent = 0
+
     context = {
         'event': event,
         'places_left': places_left,
@@ -44,6 +49,13 @@ def create_review(request):
     }
     event = Event.objects.get(pk=request.POST.get('event_id'))
 
+    if not request.user.is_authenticated:
+        data['msg'] = 'Отзывы могут отправлять только зарегистрированные пользователи'
+        data['ok'] = False
+        return JsonResponse(data)
+
+    data['user_name'] = request.user.__str__()
+
     if Review.objects.filter(user=request.user, event=event).exists():
         data['msg'] = 'Вы уже отправляли отзыв к этому событию'
         data['ok'] = False
@@ -52,13 +64,7 @@ def create_review(request):
         data['msg'] = 'Оценка и текст отзыва - обязательные поля'
         data['ok'] = False
 
-    elif not request.user.is_authenticated:
-        data['msg'] = 'Отзывы могут отправлять только зарегистрированные пользователи'
-        data['ok'] = False
-
     else:
-        data['user_name'] = request.user.__str__()
-
         new_review = Review(
             user=request.user,
             event=event,

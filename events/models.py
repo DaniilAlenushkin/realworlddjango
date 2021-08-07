@@ -87,12 +87,12 @@ class Event(models.Model):
 
     @property
     def rate(self):
-        reviews_objects = self.reviews.all()
-        counter = 0
-        for review in reviews_objects:
-            counter += review.rate
-
-        return round(counter / reviews_objects.count(), 1)
+        query_set_ratings = self.reviews.select_related('user').values_list('rate', flat=True)
+        if query_set_ratings.count() == 0:
+            rates = 0
+        else:
+            rates = sum(query_set_ratings) / query_set_ratings.count()
+        return round(rates, 1)
 
     @property
     def logo_url(self):

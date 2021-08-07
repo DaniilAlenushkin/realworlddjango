@@ -86,7 +86,7 @@
                             <div class="card-header">
                                 <h5 class="card-title mb-0">{{event.title}}</h5>
                                 {% if event.is_private %}
-                                    <p class="mb-0"><span class="badge bg-dark">Private</span></p>
+                                   <span data-test="is_private" class="badge bg-dark">Private</span>
                                 {% endif %}
                             </div>
                             <div class="card-body">
@@ -97,7 +97,7 @@
                                         <li>{{feature}}</li>
                                     {% endfor %}
                                 </ul>
-                                <p class="text-black">дата: <strong>{{ event.date_start|date:"d.m.Y в G:i" }}</strong></p>
+                                <p class="text-black">дата: <strong data-test="date_start">{{ event.date_start|date:"d.m.Y в G:i" }}</strong></p>
                             </div>
                             <div class="card-footer">
                                 <a href="{{event.get_absolute_url}}" class="btn btn-success">Смотреть</a>
