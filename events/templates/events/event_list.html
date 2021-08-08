@@ -97,7 +97,7 @@
                                         <li>{{feature}}</li>
                                     {% endfor %}
                                 </ul>
-                                <p class="text-black">дата: <strong data-test="date_start">{{ event.date_start|date:"d.m.Y в G:i" }}</strong></p>
+                                <p class="text-black">дата: <strong data-test="date_start">{{ event.date_start|date:"d.m.Y в H:i" }}</strong></p>
                             </div>
                             <div class="card-footer">
                                 <a href="{{event.get_absolute_url}}" class="btn btn-success">Смотреть</a>

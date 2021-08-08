@@ -1,6 +1,7 @@
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 from events.models import Event, Review, Category, Feature
 import datetime
 
@@ -47,7 +48,14 @@ def create_review(request):
         'created': datetime.date.today().strftime('%d.%m.%Y'),
         'user_name': ''
     }
-    event = Event.objects.get(pk=request.POST.get('event_id'))
+
+    try:
+        event = Event.objects.get(pk=request.POST.get('event_id'))
+
+    except ObjectDoesNotExist:
+        data['msg'] = 'Событие не найдено'
+        data['ok'] = False
+        return JsonResponse(data)
 
     if not request.user.is_authenticated:
         data['msg'] = 'Отзывы могут отправлять только зарегистрированные пользователи'
