@@ -81,3 +81,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ['created', 'event', ]
     fields = ['created', 'updated', 'id', ]
 
+
+@admin.register(models.Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    pass

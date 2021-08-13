@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-auto text-center me-4">
                     {% if user.is_authenticated %}
-                        <a href="#" class="btn btn-outline-primary">+ Добавить событие</a>
+                        <a href="{% url 'events:event_create' %}" class="btn btn-outline-primary">+ Добавить событие</a>
                     {% else %}
                         <a href="#" class="btn btn-outline-primary">Войти</a>
                         <a href="#" class="btn btn-primary">Регистрация</a>

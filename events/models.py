@@ -68,6 +68,12 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse('events:event_detail', args=[str(self.pk)])
 
+    def get_update_url(self):
+        return reverse('events:event_update', args=[str(self.pk)])
+
+    def get_delete_url(self):
+        return reverse('events:event_delete', args=[str(self.pk)])
+
     def display_enroll_count(self):
         return self.enrolls.count()
 
@@ -104,9 +110,18 @@ class Enroll(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='enrolls', verbose_name='Событие')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
 
+    def __str__(self):
+        return f'{self.event} - {self.user}'
+
     class Meta:
         verbose_name_plural = 'Записи на события'
         verbose_name = 'Запись на событие'
+
+    @property
+    def get_rate(self):
+        review = Review.objects.filter(event=self.event).filter(user=self.user).values_list('rate', flat=True).first()
+        list = review if review else None
+        return list
 
 
 class Review(models.Model):
@@ -120,3 +135,15 @@ class Review(models.Model):
     class Meta:
         verbose_name_plural = 'Отзывы'
         verbose_name = 'Отзыв'
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='favorites')
+    event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE, related_name='favorites')
+
+    def __str__(self):
+        return f'{self.user.username} - {self.event.title}'
+
+    class Meta:
+        verbose_name_plural = 'Избранные события '
+        verbose_name = 'Избранное событие'

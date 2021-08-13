@@ -1,0 +1,33 @@
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Участники события {{ event.title }} </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Имя</th>
+                    <th>Email</th>
+                    <th>Оценка</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for enroll in event.enrolls.all %}
+                    <tr>
+                        <th data-test="enroll_counter">{{ forloop.counter }}</th>
+                        <td data-test="enroll_user">{{ enroll.user.first_name }} {{ enroll.user.last_name }}</td>
+                        <td data-test="enroll_email">{{ enroll.user.email }}</td>
+                        <td data-test="enroll_rate">{{ enroll.get_rate|default:"0" }}</td>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

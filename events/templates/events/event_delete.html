@@ -1,0 +1,32 @@
+{% load static %}
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title mb-0">Danger zone </h5>
+  </div>
+  <div class="card-body">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-xl-4">
+        <div class="text-center my-5">
+          <img src="{% static 'images/svg-icon/cancel.svg' %}" class="img-fluid mb-5" alt="logout">
+
+          <h2 class="text-success">Удалить событие {{event.title}}?</h2>
+          <p class="my-4">
+            Вы находитесь в опасной зоне. Вы уверены что хотите
+            удалить событие безвозвратно?
+          </p>
+          <div class="button-list">
+
+
+            <form action="{{event.get_delete_url}}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Да, удалить</button>
+              <a href="{{event.get_absolute_url}}" class="btn btn-success">
+                Нет, не удалять
+              </a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

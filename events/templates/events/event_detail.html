@@ -36,8 +36,10 @@
                                         дата: <strong>{{ event.date_start|date:"d.m.Y в H:i" }}</strong>
                                     </p>
                                     <div class="button-list mt-5 mb-5 d-flex">
-                                        <form action="#" method="post" class="me-2">
-                                            <button data-test="enroll"
+                                        <form action="{% url 'events:enroll_create' %}" method="post" class="me-2">
+                                        {% csrf_token %}
+                                            {{enroll_form}}
+                                             <button data-test="enroll"
                                                     type="submit"
                                                     class="btn btn-success"
                                                     {%if places_left == 0 %}
@@ -46,16 +48,21 @@
                                                     {%else%}
                                                         >Записаться
                                                     {%endif%}
-
                                             </button>
                                         </form>
-                                        <a href="#" class="btn btn-primary me-2">
-                                            <i class="bi bi-pencil"></i>Изменить
+                                         <a href="{% url 'events:event_update' event.pk %}" class="btn btn-primary me-2">
+                                            <i class="bi bi-pencil-square"></i>Изменить
                                         </a>
-                                        <button type="button" class="btn btn-outline-danger"
-                                                title="Добавить в избранное">
-                                            <i class="bi bi-heart-fill"></i>
-                                        </button>
+                                        <form action="{% url 'events:event_add_to_favorite' %}" method="post">
+                                            {% csrf_token %}
+                                            {{ favorite_form }}
+                                            <button type="submit"  class="btn btn-outline-danger"
+                                                    title="Добавить в избранное">
+                                                    <i class="bi bi-heart-fill"></i>
+                                            </button>
+                                        </form>
+
+
                                     </div>
                                     <div class="card text-center col-xl-6 m-b-30 bg-info-rgba border btn-shadow">
                                         <div class="card-header">
