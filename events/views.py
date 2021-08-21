@@ -1,23 +1,23 @@
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse, HttpResponseForbidden, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
-from events.models import Event, Review, Enroll, Favorite
-import datetime
-from django.views.generic import DetailView, ListView, UpdateView, DeleteView, CreateView
 from events.forms import EventUpdateForm, EventCreationForm, EnrollCreationForm, EventAddToFavoriteForm
+from django.views.generic import DetailView, ListView, UpdateView, DeleteView, CreateView
+from django.http import JsonResponse, HttpResponseRedirect
+from events.models import Event, Review, Enroll, Favorite
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib import messages
+import datetime
 
 
 class LoginRequiredMixin:
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return HttpResponseForbidden('Недостаточно прав')
+            return HttpResponseRedirect(reverse_lazy('accounts:sign_in'))
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return HttpResponseForbidden('Недостаточно прав')
+            return HttpResponseRedirect(reverse_lazy('accounts:sign_in'))
         return super().post(request, *args, **kwargs)
 
 
@@ -26,6 +26,11 @@ class EventListView(ListView):
     template_name = 'events/event_list/html'
     paginate_by = 9
     context_object_name = 'event_objects'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading'] = 'Cобытия'
+        return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -39,6 +44,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['heading'] = 'Редактирование события'
         return context
 
     def form_valid(self, form):
@@ -71,6 +77,7 @@ class EventDetailView(DetailView):
         }
         context['enroll_form'] = EnrollCreationForm(initial=initial)
         context['favorite_form'] = EventAddToFavoriteForm(initial=initial)
+        context['heading'] = 'Cобытие'
         return context
 
 
@@ -90,6 +97,11 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     template_name = 'events/event_update.html'
     form_class = EventCreationForm
     success_url = reverse_lazy('events:event_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading'] = 'Добавление события'
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, f'Новое событие {form.cleaned_data["title"]} создано успешно')

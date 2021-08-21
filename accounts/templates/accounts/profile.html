@@ -1,0 +1,131 @@
+{% extends "__base.html" %}
+{% load static %}
+{% block title %}Real World Django - мой профайл{% endblock %}
+
+{% block content %}
+<div class="vertical-layout">
+   {% include "snippets/_left_menu.html"%}
+    <!-- Start MAIN_CONTAINER -->
+    <div class="rightbar">
+        {% include "snippets/_top_bar.html"%}
+        <!-- Start CONTAINER_BAR -->
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <img src=" {{ profile.avatar_url }}" class="img-fluid" alt="profile"
+                                 style="width: 250px">
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Основная информация</h5>
+                        </div>
+                        <div class="card-body">
+                            <form action="." method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <!--<div class="mb-3 text-start">
+                                    <label for="formFile" class="form-label">Загрузить аватар</label>
+                                    <input class="form-control" type="file" id="formFile">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="id_email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="id_username">
+                                </div>
+                                -->
+                                <button type="submit" class="btn btn-primary">
+                                    Сохранить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Мои события</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Событие</th>
+                                        <th scope="col">Дата старта</th>
+                                        <th scope="col">Моя оценка</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for enroll in user.enrolls.all %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>
+                                            <a href="{{enroll.event.get_absolute_url}}" data-test="event">
+                                               {{ enroll.event }}
+                                            </a>
+                                        </td>
+                                        <td data-test="event_start">{{ enroll.event.date_start|date:"d.m.Y" }}</td>
+                                        <td data-test="event_rate">{{ enroll.get_rate|default:"--" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Мои отзывы</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Событие</th>
+                                        <th scope="col">Отзыв</th>
+                                        <th scope="col">Оценка</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for review in user.reviews.all %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>
+                                            <a href="{{review.event.get_absolute_url}}" data-test="review_event">
+                                                {{ review.event }}
+                                            </a>
+                                        </td>
+                                        <td data-test="review_text">
+                                            {{ review.text|truncatewords:4  }}
+                                        </td>
+                                        <td data-test="review_rate">{{ review.rate}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End CONTAINER_BAR -->
+        {% include "snippets/_footer.html"%}
+    </div>
+    <!-- End MAIN_CONTAINER -->
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
