@@ -24,7 +24,7 @@
                                         <p data-test="is_private" class="badge bg-dark">Private</p>
                                     {%endif%}
                                     <h2 data-test="event_title">{{event.title}}</h2>
-                                    <p data-test="event_rate" class="badge bg-warning">{{event.rate}}/5</p>
+                                    <p data-test="event_rate" class="badge bg-warning">{{event.get_rate|floatformat}}/5</p>
                                     <h5 data-test="event_category" class="mt-3">{{event.category}}</h5>
                                     <p data-test="event_description" class="my-4">{{event.description}}</p>
                                     <ul>
@@ -42,7 +42,7 @@
                                              <button data-test="enroll"
                                                     type="submit"
                                                     class="btn btn-success"
-                                                    {%if places_left == 0 %}
+                                                    {%if event.places_left == 0 %}
                                                         disabled>
                                                         Мест нет
                                                     {%else%}
@@ -71,21 +71,21 @@
                                         <div class="card-body">
                                             <i class="bi bi-emoji-smile text-success" style="font-size: 3rem"></i>
                                             <h4 data-test="enroll_count">
-                                                {{event.display_enroll_count}} из {{event.participants_number}}
+                                                {{event.count}} из {{event.participants_number}}
                                             </h4>
                                             <p data-test="places_left">
-                                                {%if places_left == 0 %}
+                                                {%if event.places_left == 0 %}
                                                     осталось мест: мест нет
                                                 {%else%}
-                                                    осталось мест: {{places_left}}
+                                                    осталось мест: {{event.places_left}}
                                                 {%endif%}
                                             </p>
                                             <div class="progress" style="height: 5px;">
                                                 <div data-test="progressbar"
                                                      class="progress-bar bg-success"
                                                      role="progressbar"
-                                                     style="width: {{fullness_percent}}%"
-                                                     aria-valuenow="{{fullness_percent}}"
+                                                     style="width: {% widthratio event.count event.participants_number 100 %}%"
+                                                     aria-valuenow="{% widthratio event.count event.participants_number 100 %}"
                                                      aria-valuemin="0"
                                                      aria-valuemax="100">
                                                 </div>

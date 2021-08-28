@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
+from events.managers import EventQuerySet
 
 
 class Category(models.Model):
@@ -47,6 +48,7 @@ class Event(models.Model):
         (FULLNESS_FULL, FULLNESS_LEGEND_FULL),
     )
 
+    objects = EventQuerySet.as_manager()
     logo = models.ImageField(upload_to='events/event', blank=True, null=True,)
     title = models.CharField(max_length=200, default='', verbose_name='Название')
     description = models.TextField(default='', verbose_name='Описание')
@@ -91,14 +93,14 @@ class Event(models.Model):
 
     display_places_left.short_description = 'Осталось мест'
 
-    @property
-    def rate(self):
-        query_set_ratings = self.reviews.select_related('user').values_list('rate', flat=True)
-        if query_set_ratings.count() == 0:
-            rates = 0
-        else:
-            rates = sum(query_set_ratings) / query_set_ratings.count()
-        return round(rates, 1)
+    # @property
+    # def rate(self):
+    #    query_set_ratings = self.reviews.select_related('user').values_list('rate', flat=True)
+    #    if query_set_ratings.count() == 0:
+    #        rates = 0
+    #    else:
+    #        rates = sum(query_set_ratings) / query_set_ratings.count()
+    #    return round(rates, 1)
 
     @property
     def logo_url(self):
@@ -117,11 +119,11 @@ class Enroll(models.Model):
         verbose_name_plural = 'Записи на события'
         verbose_name = 'Запись на событие'
 
-    @property
-    def get_rate(self):
-        review = Review.objects.filter(event=self.event).filter(user=self.user).values_list('rate', flat=True).first()
-        list = review if review else None
-        return list
+    # @property
+    # def get_rate(self):
+    #    review = Review.objects.filter(event=self.event).filter(user=self.user).values_list('rate', flat=True).first()
+    #    list = review if review else None
+    #    return list
 
 
 class Review(models.Model):

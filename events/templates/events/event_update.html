@@ -25,6 +25,7 @@
                                 </h3>
                             </div>
                             {{ form.non_field_errors }}
+                            <div class="card-body">
                             <form action="." method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {% for field in form %}
@@ -43,8 +44,8 @@
                                     {% endif %}
                                     {% endfor %}
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
-
                             </form>
+                            </div>
                         </div>
                     </div>
                         <div class="tab-pane fade" id="v-pills-participants" role="tabpanel"

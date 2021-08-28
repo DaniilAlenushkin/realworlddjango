@@ -34,11 +34,13 @@ class ProfileUpdateView(UpdateView):
     model = Profile
     form_class = ProfileUpdateForm
     template_name = 'accounts/profile.html'
+    context_object_name = 'profile_objects'
 
     def get_object(self, queryset=None):
         pk = self.request.user.pk
         self.kwargs['pk'] = pk
         queryset = super().get_queryset().filter(pk=pk)
+        queryset = queryset.select_related('user').prefetch_related('user__enrolls__event', 'user__reviews__event')
         profile = super().get_object(queryset)
         return profile
 

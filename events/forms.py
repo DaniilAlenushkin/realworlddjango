@@ -1,5 +1,5 @@
 from django import forms
-from events.models import Event, Enroll, Favorite
+from events.models import Event, Enroll, Favorite, Category, Feature
 
 
 class EventCreateUpdateForm(forms.ModelForm):
@@ -16,7 +16,7 @@ class EventCreateUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for field in self.fields.values():
-            field.widget.attrs.update({'class': 'special'})
+            field.widget.attrs.update({'class': 'form-control'})
 
         self.fields['description'].widget.attrs.update({'rows': 3})
         self.fields['is_private'].widget.attrs.update({'class': 'custom_check'})
@@ -72,3 +72,29 @@ class EventAddToFavoriteForm(forms.ModelForm):
         if Favorite.objects.filter(user=user, event=event).exists():
             raise forms.ValidationError(f'Событие уже добавлено в избранное')
         return cleaned_data
+
+
+class EventFilterForm(forms.Form):
+    category = forms.ModelChoiceField(label='Категория', queryset=Category.objects.all(), required=False)
+    features = forms.ModelMultipleChoiceField(label='Свойства', queryset=Feature.objects.all(), required=False)
+    date_start = forms.DateTimeField(label='Дата начала',
+                                     widget=forms.DateInput(format="%Y-%m-%d", attrs={'type': 'date'}),
+                                     required=False)
+    date_end = forms.DateTimeField(label='Дата Конца',
+                                   widget=forms.DateInput(format="%Y-%m-%d", attrs={'type': 'date'}),
+                                   required=False)
+    is_private = forms.BooleanField(label='Приватное',
+                                    widget=forms.CheckboxInput(attrs={'type': 'checkbox'}),
+                                    required=False)
+    is_available = forms.BooleanField(label='Есть места',
+                                      widget=forms.CheckboxInput(attrs={'type': 'checkbox'}),
+                                      required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].widget.attrs.update({'class': 'form-select'})
+        self.fields['features'].widget.attrs.update({'class': 'form-select', 'multiple': True})
+        self.fields['date_start'].widget.attrs.update({'class': 'form-control'})
+        self.fields['date_end'].widget.attrs.update({'class': 'form-control'})
+        self.fields['is_private'].widget.attrs.update({'class': 'form-check-input'})
+        self.fields['is_available'].widget.attrs.update({'class': 'form-check-input'})

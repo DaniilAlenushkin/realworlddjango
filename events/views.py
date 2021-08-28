@@ -1,4 +1,5 @@
-from events.forms import EventUpdateForm, EventCreationForm, EnrollCreationForm, EventAddToFavoriteForm
+from events.forms import (EventUpdateForm, EventCreationForm, EnrollCreationForm,
+                          EventAddToFavoriteForm, EventFilterForm)
 from django.views.generic import DetailView, ListView, UpdateView, DeleteView, CreateView
 from django.http import JsonResponse, HttpResponseRedirect
 from events.models import Event, Review, Enroll, Favorite
@@ -24,16 +25,41 @@ class LoginRequiredMixin:
 class EventListView(ListView):
     model = Event
     template_name = 'events/event_list/html'
-    paginate_by = 9
+    paginate_by = 50
     context_object_name = 'event_objects'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['heading'] = 'Cобытия'
+        context['filter_form'] = EventFilterForm(self.request.GET)
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        queryset = queryset.event_qs()
+        form = EventFilterForm(self.request.GET)
+        if form.is_valid():
+            filter_category = form.cleaned_data['category']
+            filter_features = form.cleaned_data['features']
+            filter_start = form.cleaned_data['date_start']
+            filter_end = form.cleaned_data['date_end']
+            filter_private = form.cleaned_data['is_private']
+            filter_available = form.cleaned_data['is_available']
+
+            if filter_category:
+                queryset = queryset.filter(category=filter_category)
+            if filter_features:
+                for feature in filter_features:
+                    queryset = queryset.filter(features__in=[feature])
+            if filter_start:
+                queryset = queryset.filter(date_start__gt=filter_start)
+            if filter_end:
+                queryset = queryset.filter(date_start__lt=filter_end)
+            if filter_private:
+                queryset = queryset.filter(is_private=filter_private)
+            if filter_available:
+                queryset = queryset.filter(places_left__gt=0)
+
         return queryset.order_by('-pk')
 
 
@@ -41,6 +67,10 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     template_name = 'events/event_update.html'
     form_class = EventUpdateForm
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.event_qs()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,17 +90,8 @@ class EventDetailView(DetailView):
     model = Event
     template_name = 'events/event_detail.html'
 
-    def get_object(self, queryset=None):
-        default_object = super().get_object(queryset)
-        return default_object
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['places_left'] = self.object.participants_number - self.object.enrolls.count()
-        try:
-            context['fullness_percent'] = int((self.object.enrolls.count() / self.object.participants_number) * 100)
-        except ZeroDivisionError:
-            context['fullness_percent'] = 0
         initial = {
             'user': self.request.user,
             'event': self.object,
@@ -79,6 +100,11 @@ class EventDetailView(DetailView):
         context['favorite_form'] = EventAddToFavoriteForm(initial=initial)
         context['heading'] = 'Cобытие'
         return context
+
+    def get_queryset(self):
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        queryset = super().get_queryset().filter(pk=pk)
+        return queryset.event_qs()
 
 
 class EventDeleteView(LoginRequiredMixin, DeleteView):

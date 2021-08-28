@@ -14,7 +14,7 @@
                 <div class="col">
                     <div class="card mb-3">
                         <div class="card-body text-center">
-                            <img src=" {{ profile.avatar_url }}" class="img-fluid" alt="profile"
+                            <img src=" {{ profile_objects.avatar_url }}" class="img-fluid" alt="profile"
                                  style="width: 250px">
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for enroll in user.enrolls.all %}
+                                    {% for enroll in profile_objects.user.enrolls.all %}
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
                                         <td>
@@ -96,7 +96,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for review in user.reviews.all %}
+                                    {% for review in profile_objects.user.reviews.all %}
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
                                         <td>
