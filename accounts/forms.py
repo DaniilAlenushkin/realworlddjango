@@ -1,8 +1,9 @@
+from django import forms
 from django.contrib.auth.forms import (UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm,
                                        SetPasswordForm)
-from utils.forms import update_fields_widget
+
 from accounts.models import Profile
-from django import forms
+from utils.forms import update_fields_widget
 
 
 class CustomUserCreationForm(UserCreationForm):

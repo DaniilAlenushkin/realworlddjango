@@ -1,13 +1,15 @@
-from events.forms import (EventUpdateForm, EventCreationForm, EnrollCreationForm,
-                          EventAddToFavoriteForm, EventFilterForm)
-from django.views.generic import DetailView, ListView, UpdateView, DeleteView, CreateView
+import datetime
+
+from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
-from events.models import Event, Review, Enroll, Favorite
-from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.contrib import messages
-import datetime
+from django.views.decorators.http import require_POST
+from django.views.generic import DetailView, ListView, UpdateView, DeleteView, CreateView
+
+from events.forms import (EventUpdateForm, EventCreationForm, EnrollCreationForm,
+                          EventAddToFavoriteForm, EventFilterForm)
+from events.models import Event, Review, Enroll, Favorite
 
 
 class LoginRequiredMixin:

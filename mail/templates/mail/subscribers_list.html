@@ -2,12 +2,9 @@
 {% block title %}Real World Django - отправка писем{% endblock %}
 {% load static %}
 {% block content %}
-
-<!-- Start MAIN_CONTAINER -->
-    {% include "snippets/_left_menu.html"%}
+{% include "snippets/_left_menu.html" %}
 <div class="rightbar">
-    {% include "snippets/_top_bar.html" %}
-    <!-- Start CONTAINER_BAR -->
+{% include "snippets/_top_bar.html" %}
     <div class="container mt-3">
         <h2>Подписчики</h2>
         <hr>
@@ -63,7 +60,7 @@
         </div>
     </div>
     <!-- End CONTAINER_BAR -->
-
+{% include "snippets/_footer.html" %}
 </div>
 <!-- End MAIN_CONTAINER -->
 
@@ -71,8 +68,8 @@
     function readySubscribers() {
 
         const urlCreateLetters = "{% url 'api_mail:create_letters' %}"
-        const urlSendLetters = ""
-        const urlGetSubscribers = ""
+        const urlSendLetters = "{% url 'api_mail:send_letters' %}"
+        const urlGetSubscribers = "{% url 'api_mail:get_subscribers' %}"
 
         let btnCreateLetters = document.getElementById('btnCreateLetters')
         if (btnCreateLetters) {
@@ -90,7 +87,5 @@
 
     }
     document.addEventListener("DOMContentLoaded", readySubscribers)
-
 </script>
-
 {% endblock %}

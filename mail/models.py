@@ -1,4 +1,5 @@
 from django.db import models
+
 from mail.managers import SubscriberQuerySet
 
 
@@ -53,4 +54,3 @@ class Letter(models.Model):
                 Letter.objects.create(to=to, subject=subject, text=text)
                 new_letters += 1
         return new_letters
-

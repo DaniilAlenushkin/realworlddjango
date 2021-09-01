@@ -1,5 +1,3 @@
-from accounts.forms import (CustomUserCreationForm, ProfileUpdateForm, CustomAuthenticationForm,
-                            CustomPasswordResetForm, CustomSetPasswordForm)
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import login
@@ -7,6 +5,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView
+
+from accounts.forms import (CustomUserCreationForm, ProfileUpdateForm, CustomAuthenticationForm,
+                            CustomPasswordResetForm, CustomSetPasswordForm)
 from accounts.models import Profile
 
 

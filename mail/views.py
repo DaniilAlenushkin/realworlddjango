@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
@@ -28,7 +29,7 @@ class SubscriberListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['heading'] = 'Подписчики'
+        context['heading'] = 'Отправка писем'
         context['subscriber_form'] = SubscriberCreateForm()
         context['letter_form'] = LetterCreateForm()
         return context

@@ -1,4 +1,5 @@
 from django import forms
+
 from mail.models import Subscriber
 
 
@@ -14,7 +15,7 @@ class SubscriberCreateForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         if Subscriber.get_by_email(email):
-            raise forms.ValidationError('Подписчик с указанным email уже существует')
+            raise forms.ValidationError('Подписчик с указанным email уже с уществует')
         return email
 
 
