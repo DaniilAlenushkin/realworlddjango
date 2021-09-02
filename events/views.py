@@ -37,8 +37,7 @@ class EventListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.event_qs()
+        queryset = Event.objects_event_qs.event_qs()
         form = EventFilterForm(self.request.GET)
         if form.is_valid():
             filter_category = form.cleaned_data['category']
@@ -71,8 +70,8 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     form_class = EventUpdateForm
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.event_qs()
+        queryset = Event.objects_event_qs.event_qs()
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -105,8 +104,8 @@ class EventDetailView(DetailView):
 
     def get_queryset(self):
         pk = self.kwargs.get(self.pk_url_kwarg)
-        queryset = super().get_queryset().filter(pk=pk)
-        return queryset.event_qs()
+        queryset = Event.objects_event_qs.event_qs().filter(pk=pk)
+        return queryset
 
 
 class EventDeleteView(LoginRequiredMixin, DeleteView):

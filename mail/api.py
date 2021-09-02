@@ -73,13 +73,6 @@ def send_letters_view(request):
 
 
 def get_subscribers_view(request):
-    list_emails_sent = Letter.objects.filter(is_sent=False).values_list('is_sent', flat=True)
-    if list_emails_sent:
-        all_emails_sent = True
-    else:
-        all_emails_sent = False
-
-    return JsonResponse({
-        'subscribers': Subscriber.get_objects_list(),
-        'all_emails_sent': all_emails_sent,
-    })
+    all_emails_sent = not Letter.objects.filter(is_sent=False).exists()
+    return JsonResponse({'subscribers': Subscriber.get_objects_list(),
+                         'all_emails_sent': all_emails_sent})

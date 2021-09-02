@@ -49,7 +49,8 @@ class Event(models.Model):
         (FULLNESS_FULL, FULLNESS_LEGEND_FULL),
     )
 
-    objects = EventQuerySet.as_manager()
+    objects = models.Manager()
+    objects_event_qs = EventQuerySet.as_manager()
     logo = models.ImageField(upload_to='events/event', blank=True, null=True,)
     title = models.CharField(max_length=200, default='', verbose_name='Название')
     description = models.TextField(default='', verbose_name='Описание')

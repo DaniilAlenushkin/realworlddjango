@@ -5,7 +5,7 @@ from . import models
 
 @admin.register(models.Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
-    list_display = ['id', 'email',]
+    list_display = ['id', 'email', ]
     fields = ['email', ]
 
 

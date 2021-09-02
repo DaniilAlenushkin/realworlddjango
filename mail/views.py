@@ -1,12 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
 from mail.forms import SubscriberCreateForm, LetterCreateForm
 from mail.models import Subscriber
+from events.views import LoginRequiredMixin
 
 
 class SubscriberCreateView(LoginRequiredMixin, CreateView):
