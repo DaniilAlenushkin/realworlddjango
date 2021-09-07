@@ -29,7 +29,6 @@ urlpatterns += [
     path('accounts/', include('accounts.urls')),
     path('mail/', include('mail.urls')),
 ]
-
 # API URLs
 urlpatterns += [
     path('api/events/', include('events.urls_api')),

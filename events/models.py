@@ -112,6 +112,9 @@ class Enroll(models.Model):
         verbose_name_plural = 'Записи на события'
         verbose_name = 'Запись на событие'
 
+    def get_delete_url(self):
+        return reverse('events:enroll_delete', args=[str(self.pk)])
+
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews', verbose_name='Пользователь')
@@ -125,10 +128,15 @@ class Review(models.Model):
         verbose_name_plural = 'Отзывы'
         verbose_name = 'Отзыв'
 
+    def get_delete_url(self):
+        return reverse('events:review_delete', args=[str(self.pk)])
+
 
 class Favorite(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='favorites')
-    event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE, related_name='favorites')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='favorites',
+                             verbose_name='Пользователь')
+    event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE, related_name='favorites',
+                              verbose_name='Событие')
 
     def __str__(self):
         return f'{self.user.username} - {self.event.title}'
@@ -136,3 +144,6 @@ class Favorite(models.Model):
     class Meta:
         verbose_name_plural = 'Избранные события '
         verbose_name = 'Избранное событие'
+
+    def get_delete_url(self):
+        return reverse('events:favorite_delete', args=[str(self.pk)])

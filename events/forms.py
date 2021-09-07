@@ -76,6 +76,7 @@ class EventAddToFavoriteForm(forms.ModelForm):
 
 
 class EventFilterForm(forms.Form):
+    title = forms.CharField(label='Название', required=False)
     category = forms.ModelChoiceField(label='Категория', queryset=Category.objects.all(), required=False)
     features = forms.ModelMultipleChoiceField(label='Свойства', queryset=Feature.objects.all(), required=False)
     date_start = forms.DateTimeField(label='Дата начала',
@@ -96,6 +97,7 @@ class EventFilterForm(forms.Form):
         self.fields['category'].widget.attrs.update({'class': 'form-select'})
         self.fields['features'].widget.attrs.update({'class': 'form-select', 'multiple': True})
         self.fields['date_start'].widget.attrs.update({'class': 'form-control'})
+        self.fields['title'].widget.attrs.update({'class':'form-control'})
         self.fields['date_end'].widget.attrs.update({'class': 'form-control'})
         self.fields['is_private'].widget.attrs.update({'class': 'form-check-input'})
         self.fields['is_available'].widget.attrs.update({'class': 'form-check-input'})

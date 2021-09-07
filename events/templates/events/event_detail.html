@@ -24,7 +24,11 @@
                                         <p data-test="is_private" class="badge bg-dark">Private</p>
                                     {%endif%}
                                     <h2 data-test="event_title">{{event.title}}</h2>
+                                    {% if event.get_rate %}
                                     <p data-test="event_rate" class="badge bg-warning">{{event.get_rate|floatformat}}/5</p>
+                                    {% else %}
+                                    <p data-test="event_rate" class="badge bg-warning">Оценок еще нет!</p>
+                                    {% endif %}
                                     <h5 data-test="event_category" class="mt-3">{{event.category}}</h5>
                                     <p data-test="event_description" class="my-4">{{event.description}}</p>
                                     <ul>

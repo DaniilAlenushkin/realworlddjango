@@ -1,7 +1,7 @@
 import datetime
 
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
@@ -46,7 +46,9 @@ class EventListView(ListView):
             filter_end = form.cleaned_data['date_end']
             filter_private = form.cleaned_data['is_private']
             filter_available = form.cleaned_data['is_available']
-
+            filter_title = form.cleaned_data['title']
+            if filter_title:
+                queryset = queryset.filter(title__icontains=filter_title)
             if filter_category:
                 queryset = queryset.filter(category=filter_category)
             if filter_features:
@@ -116,6 +118,57 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         result = super().delete(request, *args, **kwargs)
         messages.success(request, f'Событие {self.object} удалено')
+        return result
+
+
+class EnrollDeleteView(LoginRequiredMixin,DeleteView):
+    model = Enroll
+    template_name = 'accounts/profile.html'
+    success_url = reverse_lazy('accounts:profile')
+
+    def get_object(self, queryset=None):
+        obj = super().get_object()
+        if not obj.user == self.request.user:
+            raise Http404
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        result = super().delete(request, *args, **kwargs)
+        messages.success(request, f'Запись на событие {self.object.event} удалена')
+        return result
+
+
+class ReviewDeleteView(LoginRequiredMixin, DeleteView):
+    model = Review
+    template_name = 'accounts/profile.html'
+    success_url = reverse_lazy('accounts:profile')
+
+    def get_object(self, queryset=None):
+        obj = super().get_object()
+        if not obj.user == self.request.user:
+            raise Http404
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        result = super().delete(request, *args, **kwargs)
+        messages.success(request, f'Отзыв на событие {self.object.event} удален')
+        return result
+
+
+class FavoriteDeleteView(LoginRequiredMixin, DeleteView):
+    model = Favorite
+    template_name = 'accounts/profile.html'
+    success_url = reverse_lazy('accounts:profile')
+
+    def get_object(self, queryset=None):
+        obj = super().get_object()
+        if not obj.user == self.request.user:
+            raise Http404
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        result = super().delete(request, *args, **kwargs)
+        messages.success(request, f'Событие {self.object.event} удалено из избранного')
         return result
 
 

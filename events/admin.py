@@ -84,4 +84,4 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(models.Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'user', 'event', ]

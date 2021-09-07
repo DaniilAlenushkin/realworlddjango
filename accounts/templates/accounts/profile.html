@@ -20,36 +20,34 @@
                     </div>
                     <div class="card mt-3">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Основная информация</h5>
+                            <h5 class="card-title mb-0">Изменить свои данные:</h5>
+                            Введите в соответствующие поля новую информацию
                         </div>
                         <div class="card-body">
                             <form action="." method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                {{ form.as_p }}
-                                <!--<div class="mb-3 text-start">
-                                    <label for="formFile" class="form-label">Загрузить аватар</label>
-                                    <input class="form-control" type="file" id="formFile">
+                                {% for field in form %}
+                                <div class="mb-3 text-start">
+                                    <label class="form-label">{{ field.label_tag }}</label>
+                                    {{ field }}
                                 </div>
-                                <div class="mb-3">
-                                    <label for="id_email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="id_email">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="id_username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="id_username">
-                                </div>
-                                -->
+                                {% if field.errors %}
+                                        <div class="alert alert-danger">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                                 <button type="submit" class="btn btn-primary">
                                     Сохранить
                                 </button>
                             </form>
                         </div>
                     </div>
-
+                    {% if profile_objects.user.enrolls.all %}
 
                     <div class="card mt-3">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Мои события</h5>
+                            <h5 class="card-title mb-0">Записи на события</h5>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -59,7 +57,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Событие</th>
                                         <th scope="col">Дата старта</th>
-                                        <th scope="col">Моя оценка</th>
+                                        <th scope="col">Удаление</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -72,7 +70,12 @@
                                             </a>
                                         </td>
                                         <td data-test="event_start">{{ enroll.event.date_start|date:"d.m.Y" }}</td>
-                                        <td data-test="event_rate">{{ enroll.get_rate|default:"--" }}</td>
+                                        <td>
+                                        <form action="{{enroll.get_delete_url}}" method="post">
+                                        {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                        </form>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                     </tbody>
@@ -80,6 +83,9 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
+
+                    {% if profile_objects.user.reviews.all %}
                     <div class="card mt-3">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Мои отзывы</h5>
@@ -93,6 +99,7 @@
                                         <th scope="col">Событие</th>
                                         <th scope="col">Отзыв</th>
                                         <th scope="col">Оценка</th>
+                                        <th scope="col">Удаление</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -108,6 +115,12 @@
                                             {{ review.text|truncatewords:4  }}
                                         </td>
                                         <td data-test="review_rate">{{ review.rate}}</td>
+                                        <td>
+                                        <form action="{{review.get_delete_url}}" method="post">
+                                        {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                        </form>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                     </tbody>
@@ -115,6 +128,44 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
+
+                    {% if profile_objects.user.favorites.all%}
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Избранные события</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Событие</th>
+                                        <th scope="col">Удаление</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for favorite in profile_objects.user.favorites.all %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>
+                                            <a href="{{favorite.event.get_absolute_url}}" data-test="review_event">
+                                                {{ favorite.event }}
+                                            </a>
+                                        <td>
+                                        <form action="{{favorite.get_delete_url}}" method="post">
+                                        {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                        </form>
+                                        </td>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

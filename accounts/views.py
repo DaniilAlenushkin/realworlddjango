@@ -15,17 +15,16 @@ class CustomSignUpView(CreateView):
     model = User
     template_name = 'accounts/registration/signup.html'
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('events:event_list')
+    success_url = reverse_lazy('accounts:sign_in')
 
     def form_valid(self, form):
-        result = super().form_valid(form)
         user = self.object
         if user is not None:
             login(self.request, user)
-        return result
+        return super().form_valid(form)
 
     def get(self, request, *args, **kwargs):
-        if self.request.user.id :
+        if self.request.user.id:
             redirect_url = reverse_lazy('main:index')
             return HttpResponseRedirect(redirect_url)
         return super().get(request, *args, **kwargs)
@@ -41,7 +40,11 @@ class ProfileUpdateView(UpdateView):
         pk = self.request.user.pk
         self.kwargs['pk'] = pk
         queryset = super().get_queryset().filter(pk=pk)
-        queryset = queryset.select_related('user').prefetch_related('user__enrolls__event', 'user__reviews__event')
+        queryset = queryset.select_related('user').prefetch_related(
+            'user__enrolls__event',
+            'user__reviews__event',
+            'user__favorites__event'
+        )
         profile = super().get_object(queryset)
         return profile
 
@@ -57,8 +60,28 @@ class ProfileUpdateView(UpdateView):
         return context
 
     def form_valid(self, form):
+        cd = form.cleaned_data
+        user_update = Profile.objects.filter(pk=self.kwargs['pk']).first().user
+        email = cd.get('email', '')
+        username = cd.get('username', '')
+        full_name = cd.get('full_name', '')
+
+        if email:
+            user_update.email = email
+        if username:
+            user_update.username = username
+        if full_name:
+            first_name = full_name[0]
+            last_name = full_name[1]
+            user_update.first_name = first_name
+            user_update.last_name = last_name
+        user_update.save()
         messages.success(self.request, f'Данные успешно обновлены')
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.non_field_errors())
+        return super().form_invalid(form)
 
 
 class CustomLoginView(auth_views.LoginView):
@@ -66,7 +89,7 @@ class CustomLoginView(auth_views.LoginView):
     template_name = 'accounts/registration/signin.html'
 
     def get(self, request, *args, **kwargs):
-        if self.request.user.id :
+        if self.request.user.id:
             redirect_url = reverse_lazy('main:index')
             return HttpResponseRedirect(redirect_url)
         return super().get(request, *args, **kwargs)
