@@ -1,0 +1,8 @@
+{% load realworlddjangotags %}
+{% if request.GET.title %}&title={{request.GET.title}}{% endif %}
+{% if request.GET.category %}&category={{request.GET.category}}{% endif %}
+{% if request.GET.features %}{% for feature in request.GET|get_item:'features' %}&features={{feature}}{% endfor %}{% endif %}
+{% if request.GET.date_start %}&date_start={{request.GET.date_start}}{% endif %}
+{% if request.GET.date_end %}&date_end={{request.GET.date_end}}{% endif %}
+{% if request.GET.is_private %}&is_private={{request.GET.is_private}}{% endif %}
+{% if request.GET.is_available %}&is_available={{request.GET.is_available}}{% endif %}

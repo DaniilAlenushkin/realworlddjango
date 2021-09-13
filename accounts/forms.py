@@ -74,6 +74,13 @@ class CustomPasswordResetForm(PasswordResetForm):
         super().__init__(*args, **kwargs)
         update_fields_widget(self, ('email',), 'form-control')
 
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError(f'Пользователя с email: {email} не существует')
+        return cleaned_data
+
 
 class CustomSetPasswordForm(SetPasswordForm):
 

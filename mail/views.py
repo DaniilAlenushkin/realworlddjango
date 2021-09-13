@@ -5,10 +5,10 @@ from django.views.generic import ListView, CreateView
 
 from mail.forms import SubscriberCreateForm, LetterCreateForm
 from mail.models import Subscriber
-from events.views import LoginRequiredMixin
+from events.views import PermissionRequiredMixin
 
 
-class SubscriberCreateView(LoginRequiredMixin, CreateView):
+class SubscriberCreateView(PermissionRequiredMixin, CreateView):
     model = Subscriber
     form_class = SubscriberCreateForm
     success_url = reverse_lazy('mail:subscriber_list')
@@ -22,7 +22,7 @@ class SubscriberCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class SubscriberListView(LoginRequiredMixin, ListView):
+class SubscriberListView(PermissionRequiredMixin, ListView):
     model = Subscriber
     template_name = 'mail/subscribers_list.html'
 

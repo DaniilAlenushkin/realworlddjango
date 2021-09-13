@@ -52,7 +52,7 @@ class EnrollCreationForm(forms.ModelForm):
         user = cleaned_data.get('user')
         event = cleaned_data.get('event')
         if Enroll.objects.filter(user=user, event=event).exists():
-            raise forms.ValidationError(f'Вы уже записаны на это событие: ')
+            raise forms.ValidationError(f'Вы уже записаны на это событие. Отменить запись можно в профиле.')
         return cleaned_data
 
 
@@ -71,7 +71,7 @@ class EventAddToFavoriteForm(forms.ModelForm):
         user = cleaned_data.get('user')
         event = cleaned_data.get('event')
         if Favorite.objects.filter(user=user, event=event).exists():
-            raise forms.ValidationError(f'Событие уже добавлено в избранное')
+            raise forms.ValidationError(f'Событие уже добавлено в избранное. Изменить это можно в профиле.')
         return cleaned_data
 
 
@@ -97,7 +97,7 @@ class EventFilterForm(forms.Form):
         self.fields['category'].widget.attrs.update({'class': 'form-select'})
         self.fields['features'].widget.attrs.update({'class': 'form-select', 'multiple': True})
         self.fields['date_start'].widget.attrs.update({'class': 'form-control'})
-        self.fields['title'].widget.attrs.update({'class':'form-control'})
+        self.fields['title'].widget.attrs.update({'class': 'form-control'})
         self.fields['date_end'].widget.attrs.update({'class': 'form-control'})
         self.fields['is_private'].widget.attrs.update({'class': 'form-check-input'})
         self.fields['is_available'].widget.attrs.update({'class': 'form-check-input'})

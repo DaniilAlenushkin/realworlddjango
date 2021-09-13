@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
@@ -12,22 +13,26 @@ from events.forms import (EventUpdateForm, EventCreationForm, EnrollCreationForm
 from events.models import Event, Review, Enroll, Favorite
 
 
-class LoginRequiredMixin:
+class PermissionRequiredMixin:
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse_lazy('accounts:sign_in'))
+        if request.user.profile.role == 'u':
+            return HttpResponseRedirect(reverse_lazy('events:event_list'))
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse_lazy('accounts:sign_in'))
+        if request.user.profile.role == 'u':
+            return HttpResponseRedirect(reverse_lazy('events:event_list'))
         return super().post(request, *args, **kwargs)
 
 
 class EventListView(ListView):
     model = Event
     template_name = 'events/event_list/html'
-    paginate_by = 50
+    paginate_by = 8
     context_object_name = 'event_objects'
 
     def get_context_data(self, **kwargs):
@@ -66,7 +71,7 @@ class EventListView(ListView):
         return queryset.order_by('-pk')
 
 
-class EventUpdateView(LoginRequiredMixin, UpdateView):
+class EventUpdateView(PermissionRequiredMixin, UpdateView):
     model = Event
     template_name = 'events/event_update.html'
     form_class = EventUpdateForm
@@ -110,7 +115,7 @@ class EventDetailView(DetailView):
         return queryset
 
 
-class EventDeleteView(LoginRequiredMixin, DeleteView):
+class EventDeleteView(PermissionRequiredMixin, DeleteView):
     model = Event
     template_name = 'events/event_update.html'
     success_url = reverse_lazy('events:event_list')
@@ -121,10 +126,11 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
         return result
 
 
-class EnrollDeleteView(LoginRequiredMixin,DeleteView):
+class EnrollDeleteView(LoginRequiredMixin, DeleteView):
     model = Enroll
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('accounts:profile')
+    login_url = 'accounts:sign_in'
 
     def get_object(self, queryset=None):
         obj = super().get_object()
@@ -142,6 +148,7 @@ class ReviewDeleteView(LoginRequiredMixin, DeleteView):
     model = Review
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('accounts:profile')
+    login_url = 'accounts:sign_in'
 
     def get_object(self, queryset=None):
         obj = super().get_object()
@@ -159,6 +166,7 @@ class FavoriteDeleteView(LoginRequiredMixin, DeleteView):
     model = Favorite
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('accounts:profile')
+    login_url = 'accounts:sign_in'
 
     def get_object(self, queryset=None):
         obj = super().get_object()
@@ -172,7 +180,7 @@ class FavoriteDeleteView(LoginRequiredMixin, DeleteView):
         return result
 
 
-class EventCreateView(LoginRequiredMixin, CreateView):
+class EventCreateView(PermissionRequiredMixin, CreateView):
     model = Event
     template_name = 'events/event_update.html'
     form_class = EventCreationForm
@@ -193,6 +201,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
 
 class EnrollCreateView(LoginRequiredMixin, CreateView):
+    login_url = 'accounts:sign_in'
     model = Enroll
     form_class = EnrollCreationForm
 
@@ -214,6 +223,7 @@ class EnrollCreateView(LoginRequiredMixin, CreateView):
 
 
 class EventAddToFavoriteView(LoginRequiredMixin, CreateView):
+    login_url = 'accounts:sign_in'
     model = Favorite
     form_class = EventAddToFavoriteForm
 

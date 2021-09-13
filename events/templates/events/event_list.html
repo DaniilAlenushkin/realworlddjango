@@ -5,10 +5,10 @@
 {% block content %}
 <div class="vertical-layout">
 
-    {% include "snippets/_left_menu.html"%}
+    {% include "snippets/_left_menu.html" %}
     <!-- Start MAIN_CONTAINER -->
     <div class="rightbar">
-        {% include "snippets/_top_bar.html"%}
+        {% include "snippets/_top_bar.html" %}
         <!-- Start CONTAINER_BAR -->
         <div class="container-fluid mt-3">
             <div class="row mb-4">
@@ -17,8 +17,10 @@
                         <div class="card-body">
                             <form action="." method="get">
                                 <div class="row row-cols-lg-auto g-3 align-items-start">
+                                    <div class="col-12">
                                     {{filter_form.title.label_tag}}
                                     {{filter_form.title}}
+                                    </div>
                                     <div class="col-12">
                                         {{filter_form.category.label_tag}}
                                         {{filter_form.category}}
@@ -59,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <!--{% include "snippets/_pagination.html" %}-->
+            {% include "snippets/_pagination.html" %}
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 g-4">
                 {% for event in event_objects %}
                     <div class="col">
@@ -82,9 +84,11 @@
                             </div>
                             <div class="card-footer">
                                 <a href="{{event.get_absolute_url}}" class="btn btn-success">Смотреть</a>
+                                {% if user.profile.role == 'm' or user.profile.role == 'a' %}
                                 <a href="{% url 'events:event_update' event.pk %}" class="btn btn-outline-primary" title="Редактировать">
                                     <i class="bi bi-pencil-square"></i>Изменить
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

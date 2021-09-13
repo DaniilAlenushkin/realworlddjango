@@ -1,21 +1,22 @@
 {% if is_paginated %}
 <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="?page=1" data-test="p_start" >&laquo;</a></li>
-
+    <li class="page-item"><a class="page-link" href="?page=1{% include 'snippets/_filter_GET.html' %}" data-test="p_start" >&laquo;</a></li>
     {% if page_obj.has_previous %}
-    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}" data-test="p_previous">Предыдущая страница</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% include 'snippets/_filter_GET.html' %}" data-test="p_previous">Предыдущая страница</a></li>
     {% endif %}
 
     {% for i in paginator.page_range %}
     <li class="page-item {% if page_obj.number == i %}active{% endif %}">
-        <a class="page-link" href="?page={{ i }}" data-test="p_{{i}}">{{ i }}</a>
+        <a class="page-link" href="?page={{ i }}{% include 'snippets/_filter_GET.html' %}" data-test="p_{{i}}">{{ i }}</a>
     </li>
     {% endfor %}
 
     {% if page_obj.has_next %}
-    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" data-test="p_next">Следующая страница</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% include 'snippets/_filter_GET.html' %}" data-test="p_next">Следующая страница</a></li>
     {% endif %}
 
-    <li class="page-item"><a class="page-link" href="?page={{ paginator.num_pages }}" data-test="p_end" >&raquo;</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ paginator.num_pages }}{% include 'snippets/_filter_GET.html' %}" data-test="p_end" >&raquo;</a></li>
 </ul>
 {% endif %}
+
+

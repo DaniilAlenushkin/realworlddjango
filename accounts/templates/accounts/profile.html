@@ -20,6 +20,18 @@
                     </div>
                     <div class="card mt-3">
                         <div class="card-header">
+                            <h5 class="card-title mb-0">Ваши данные:</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Имя пользователя: {{user.username}}</p>
+                            <p>Адресс электронной почты: {{user.email}}</p>
+                            <p>Имя и фамилия : {{user.first_name}} {{user.last_name}}</p>
+                        </div>
+                    </div>
+
+
+                    <div class="card mt-3">
+                        <div class="card-header">
                             <h5 class="card-title mb-0">Изменить свои данные:</h5>
                             Введите в соответствующие поля новую информацию
                         </div>
@@ -73,7 +85,7 @@
                                         <td>
                                         <form action="{{enroll.get_delete_url}}" method="post">
                                         {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                            <button type="submit" class="btn btn-danger">Отменить запись</button>
                                         </form>
                                         </td>
                                     </tr>
@@ -118,7 +130,7 @@
                                         <td>
                                         <form action="{{review.get_delete_url}}" method="post">
                                         {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                            <button type="submit" class="btn btn-danger">Удалить отзыв</button>
                                         </form>
                                         </td>
                                     </tr>
@@ -156,7 +168,7 @@
                                         <td>
                                         <form action="{{favorite.get_delete_url}}" method="post">
                                         {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                            <button type="submit" class="btn btn-danger">Удалить из избранного</button>
                                         </form>
                                         </td>
                                     {% endfor %}

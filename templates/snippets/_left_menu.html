@@ -10,7 +10,9 @@
                 <span>Главное</span>
                 <ul class="vertical-submenu">
                     <li><a href="{% url 'events:event_list' %}">События</a></li>
+                    {% if user.profile.role == 'm' or user.profile.role == 'a' %}
                     <li><a href="{% url 'mail:subscriber_list' %}">Подписчики</a></li>
+                    {% endif %}
                 </ul>
             </li>
             <li class="vertical-menu-item">
