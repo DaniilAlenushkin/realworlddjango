@@ -51,8 +51,16 @@ class EnrollCreationForm(forms.ModelForm):
         cleaned_data = super().clean()
         user = cleaned_data.get('user')
         event = cleaned_data.get('event')
+
+        if Enroll.objects.filter(event=event).count() == event.participants_number:
+            raise forms.ValidationError(f'Места на {event} кончились, увы')
+
+        if event.is_private and not user.profile.access_to_private_events:
+            raise forms.ValidationError(f'Cобытие {event} приватное')
+
         if Enroll.objects.filter(user=user, event=event).exists():
             raise forms.ValidationError(f'Вы уже записаны на это событие. Отменить запись можно в профиле.')
+
         return cleaned_data
 
 

@@ -1,7 +1,10 @@
+from allauth.account.views import LoginView
+from allauth.socialaccount.models import SocialAccount
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView
@@ -84,7 +87,7 @@ class ProfileUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class CustomLoginView(auth_views.LoginView):
+class CustomLoginView(LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'accounts/registration/signin.html'
 

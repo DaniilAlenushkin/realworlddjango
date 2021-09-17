@@ -1,6 +1,6 @@
+from allauth.account.forms import LoginForm
 from django import forms
-from django.contrib.auth.forms import (UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm,
-                                       SetPasswordForm)
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 
 from accounts.models import Profile
@@ -54,11 +54,11 @@ class ProfileUpdateForm(CleanMixin, forms.ModelForm):
         update_fields_widget(self, ('avatar', 'email', 'username', 'full_name',), 'form-control')
 
 
-class CustomAuthenticationForm(AuthenticationForm):
+class CustomAuthenticationForm(LoginForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        update_fields_widget(self, ('username', 'password'), 'form-control')
+        update_fields_widget(self, ('login', 'password'), 'form-control')
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

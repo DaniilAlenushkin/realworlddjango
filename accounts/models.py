@@ -16,8 +16,9 @@ class Profile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     avatar = models.ImageField(null=True, blank=True, upload_to='accounts/profiles/avatar', verbose_name='Аватар')
-    role = models.CharField(max_length=1, null=True, choices=USER_ROLE_CHOICES,
+    role = models.CharField(max_length=1, choices=USER_ROLE_CHOICES,
                             default=USER_ROLE_USER, verbose_name='Роль')
+    access_to_private_events = models.BooleanField(default=False, verbose_name='Доступ к приватным событиям')
 
     def __str__(self):
         return self.user.username

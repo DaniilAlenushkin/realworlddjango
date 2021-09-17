@@ -51,12 +51,17 @@
                                                                 disabled>
                                                                 Вы записаны
                                                     {% else %}
-                                                        {%if event.places_left == 0 %}
-                                                            disabled>
-                                                            Мест нет
-                                                        {% else %}
-                                                            >Записаться
-                                                            {% endif %}
+                                                                {% if event.is_private and not user.profile.access_to_private_events %}
+                                                                        disabled>
+                                                                        У вас нет доступа к приватным событиям
+                                                                {% else %}
+                                                                    {%if event.places_left == 0 %}
+                                                                        disabled>
+                                                                        Мест нет
+                                                                    {% else %}
+                                                                        >Записаться
+                                                                    {% endif %}
+                                                                {% endif %}
                                                     {%endif%}
                                             </button>
                                         </form>

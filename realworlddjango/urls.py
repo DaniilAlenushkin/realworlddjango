@@ -28,6 +28,7 @@ urlpatterns += [
     path('events/', include('events.urls')),
     path('accounts/', include('accounts.urls')),
     path('mail/', include('mail.urls')),
+    path('allauth/accounts/', include('allauth.urls')),
 ]
 # API URLs
 urlpatterns += [
