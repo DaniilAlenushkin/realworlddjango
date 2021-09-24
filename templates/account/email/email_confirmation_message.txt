@@ -1,0 +1,9 @@
+{% extends "account/email/base_message.txt" %}
+{% load account %}
+{% block content %}
+{% user_display user as user_display %}
+Вы получили это письмо потому что пользователь {{ user_display }} использовал ваш email для регистрации на сайте {{ current_site.domain }}.
+Не переходите по ссылке ниже, если это не вы! Просто проигнорируйте это сообщение.
+
+Чтобы подтвердить свой email перейдите по ссылке: {{ activate_url }}
+{% endblock %}

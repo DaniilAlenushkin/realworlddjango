@@ -3,6 +3,7 @@ import environ
 from pathlib import Path
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+import os
 
 
 env = environ.Env()
@@ -154,10 +155,20 @@ STATICFILES_DIRS = [
     BASE_DIR / 'assets',
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'collectstatic')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_FORMS = {
+    'add_email': 'allauth.account.forms.AddEmailForm',
+    'disconnect': 'allauth.socialaccount.forms.DisconnectForm',
+    'login': 'accounts.forms.CustomAuthenticationForm',
+    'signup': 'accounts.forms.CustomUserCreationForm',
+    'sociallogin': 'allauth.socialaccount.forms.SignupForm',
+}
 
 MEDIA_ROOT = BASE_DIR / 'media'
 

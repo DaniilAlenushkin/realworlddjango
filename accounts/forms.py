@@ -41,17 +41,16 @@ class CustomUserCreationForm(CleanMixin, UserCreationForm):
 
 
 class ProfileUpdateForm(CleanMixin, forms.ModelForm):
-    email = forms.EmailField(label='Адресс электронной почты', required=False)
     username = forms.CharField(max_length=150, label='Имя пользователя', required=False)
     full_name = forms.CharField(max_length=150, label='Имя и фамилия', required=False)
 
     class Meta:
         model = Profile
-        fields = ('avatar', 'email', 'username', 'full_name', )
+        fields = ('avatar', 'username', 'full_name', )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        update_fields_widget(self, ('avatar', 'email', 'username', 'full_name',), 'form-control')
+        update_fields_widget(self, ('avatar', 'username', 'full_name',), 'form-control')
 
 
 class CustomAuthenticationForm(LoginForm):

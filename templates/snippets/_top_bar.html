@@ -8,10 +8,10 @@
                 {% if user.profile.role == 'm' or user.profile.role == 'a' %}
                 <a href="{% url 'events:event_create' %}" class="btn btn-outline-primary">+ Добавить событие</a>
                 {% endif %}
-                <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger">Выйти</a>
+                <a href="{% url 'account_logout' %}" class="btn btn-outline-danger">Выйти</a>
             {% else %}
-            <a href="{% url 'accounts:sign_in' %}" class="btn btn-outline-primary">Войти</a>
-            <a href="{% url 'accounts:sign_up' %}" class="btn btn-primary">Регистрация</a>
+            <a href="{% url 'account_login' %}" class="btn btn-outline-primary">Войти</a>
+            <a href="{% url 'account_signup' %}" class="btn btn-primary">Регистрация</a>
             {% endif %}
         </div>
     </div>

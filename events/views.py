@@ -16,14 +16,14 @@ from events.models import Event, Review, Enroll, Favorite
 class PermissionRequiredMixin:
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('accounts:sign_in'))
+            return HttpResponseRedirect(reverse_lazy('account_login'))
         if request.user.profile.role == 'u':
             return HttpResponseRedirect(reverse_lazy('events:event_list'))
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('accounts:sign_in'))
+            return HttpResponseRedirect(reverse_lazy('account_login'))
         if request.user.profile.role == 'u':
             return HttpResponseRedirect(reverse_lazy('events:event_list'))
         return super().post(request, *args, **kwargs)
@@ -130,7 +130,7 @@ class EnrollDeleteView(LoginRequiredMixin, DeleteView):
     model = Enroll
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('accounts:profile')
-    login_url = 'accounts:sign_in'
+    login_url = 'account_login'
 
     def get_object(self, queryset=None):
         obj = super().get_object()
@@ -148,7 +148,7 @@ class ReviewDeleteView(LoginRequiredMixin, DeleteView):
     model = Review
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('accounts:profile')
-    login_url = 'accounts:sign_in'
+    login_url = 'account_login'
 
     def get_object(self, queryset=None):
         obj = super().get_object()
@@ -166,7 +166,7 @@ class FavoriteDeleteView(LoginRequiredMixin, DeleteView):
     model = Favorite
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('accounts:profile')
-    login_url = 'accounts:sign_in'
+    login_url = 'account_login'
 
     def get_object(self, queryset=None):
         obj = super().get_object()
@@ -201,7 +201,7 @@ class EventCreateView(PermissionRequiredMixin, CreateView):
 
 
 class EnrollCreateView(LoginRequiredMixin, CreateView):
-    login_url = 'accounts:sign_in'
+    login_url = 'account_login'
     model = Enroll
     form_class = EnrollCreationForm
 
@@ -223,7 +223,7 @@ class EnrollCreateView(LoginRequiredMixin, CreateView):
 
 
 class EventAddToFavoriteView(LoginRequiredMixin, CreateView):
-    login_url = 'accounts:sign_in'
+    login_url = 'account_login'
     model = Favorite
     form_class = EventAddToFavoriteForm
 

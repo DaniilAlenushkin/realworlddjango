@@ -1,0 +1,25 @@
+{% extends "__base.html" %}
+{% block head_title %}Выйти?{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+           <div class="col-auto text-center me-4">
+           <h1>Выйти?</h1>
+               <hr>
+           <p>Вы уверены, что хотите выйти?</p>
+            <form method="post" action="{% url 'account_logout' %}">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button type="submit" class="btn btn-danger" align="center">Выйти</button>
+              <a href="{% url 'main:index' %}" class="btn btn-success" align="center">Вернуться обратно</a>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

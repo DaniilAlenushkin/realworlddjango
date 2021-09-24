@@ -25,14 +25,19 @@
                             <h5 class="card-title">Ваши данные:</h5>
                         </div>
                         <div class="card-body">
+                            {% if not verified %}
+                            <p style = "color:#ff0000">
+                                Подтвердите свой email
+                            </p>
+                            {% endif %}
                             <p>Имя пользователя: {{user.username}}</p>
                             <p>Адресс электронной почты: {{user.email}}</p>
                             <p>Имя и фамилия : {{user.first_name}} {{user.last_name}}</p>
+                            <a href="{% url 'socialaccount_connections' %}" class="btn btn-outline-info">Настроить связь с соц. сетями </a>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col">
                     <div class="card mt-3">
                         <div class="card-header">

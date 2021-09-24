@@ -1,0 +1,32 @@
+{% extends "__base.html" %}
+{% load socialaccount %}
+{% load static %}
+{% block title %}Регистрация пользователя{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Создайте свою учетную запись</h1>
+            <hr>
+            <p>У вас уже есть аккаунт? <a href="{% url 'account_login' %}">Войти</a></p>
+            {{ form.non_field_errors }}
+            <form action="." method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }} {{ field }} <span>{{ field.help_text }}</span>
+                </div>
+                {% if field.errors %}
+                <div class="alert alert-danger">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                <a title='Войти через VK' href="{% provider_login_url 'vk' %}" class="btn"><img src="{% static 'images/svg-icon/vk-logo.svg' %}"><i class="bi bi-vk"></i></a>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

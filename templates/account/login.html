@@ -1,0 +1,25 @@
+{% extends "__base.html" %}
+{% block title %}Войти{% endblock %}
+{% block content %}
+{% load socialaccount %}
+{% load static %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Войти</h1>
+            <hr>
+            <p>У вас нет аккаунта? <a href="{% url 'account_signup' %}">Зарегистрируйтесь</a></p>
+            <form action="." method="post">
+                {% csrf_token %}
+                {{form.login.label_tag}}
+                {{form.login}}
+                {{form.password.label_tag}}
+                {{form.password}}
+                <button type="submit" class="btn btn-primary">Войти</button>
+                <a href="{% provider_login_url 'vk' %}" class="btn"><img src="{% static 'images/svg-icon/vk-logo.svg' %}"> <i class="bi bi-vk"></i></a>
+            <a href="{% url 'accounts:password_reset' %}" class="btn">Забыли пароль?</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
+from allauth.account.models import EmailAddress
 from django import forms
-
 from events.models import Event, Enroll, Favorite, Category, Feature
 
 
@@ -60,6 +60,9 @@ class EnrollCreationForm(forms.ModelForm):
 
         if Enroll.objects.filter(user=user, event=event).exists():
             raise forms.ValidationError(f'Вы уже записаны на это событие. Отменить запись можно в профиле.')
+
+        if not EmailAddress.objects.filter(user=user).first().verified:
+            raise forms.ValidationError(f'Подтвердите свой email-адресс')
 
         return cleaned_data
 

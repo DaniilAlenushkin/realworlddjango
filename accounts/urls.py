@@ -7,10 +7,7 @@ from . import views
 app_name = 'accounts'
 
 urlpatterns = [
-    path('sign-up/', views.CustomSignUpView.as_view(), name='sign_up'),
     path('profile/', views.ProfileUpdateView.as_view(), name='profile'),
-    path('sign-in/', views.CustomLoginView.as_view(), name='sign_in'),
-    path('logout/', LogoutView.as_view(), name='logout'),
     path('password-change/',
          PasswordChangeView.as_view(
              template_name='accounts/registration/password_change.html',

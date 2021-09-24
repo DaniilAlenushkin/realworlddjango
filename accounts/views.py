@@ -1,36 +1,13 @@
-from allauth.account.views import LoginView
+from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialAccount
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
-from django.contrib.auth import login
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import UpdateView
 
-from accounts.forms import (CustomUserCreationForm, ProfileUpdateForm, CustomAuthenticationForm,
-                            CustomPasswordResetForm, CustomSetPasswordForm)
+from accounts.forms import (ProfileUpdateForm, CustomPasswordResetForm, CustomSetPasswordForm)
 from accounts.models import Profile
-
-
-class CustomSignUpView(CreateView):
-    model = User
-    template_name = 'accounts/registration/signup.html'
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('accounts:sign_in')
-
-    def form_valid(self, form):
-        user = self.object
-        if user is not None:
-            login(self.request, user)
-        return super().form_valid(form)
-
-    def get(self, request, *args, **kwargs):
-        if self.request.user.id:
-            redirect_url = reverse_lazy('main:index')
-            return HttpResponseRedirect(redirect_url)
-        return super().get(request, *args, **kwargs)
 
 
 class ProfileUpdateView(UpdateView):
@@ -53,24 +30,24 @@ class ProfileUpdateView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.id is None:
-            redirect_url = reverse_lazy('accounts:sign_in')
+            redirect_url = reverse_lazy('account_login')
             return HttpResponseRedirect(redirect_url)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['heading'] = 'Профаил'
+        user = Profile.objects.filter(pk=self.kwargs['pk']).first().user
+        context['verified'] = EmailAddress.objects.filter(user=user).first().verified
+        context['social_account'] = SocialAccount.objects.filter(user=user).exists()
         return context
 
     def form_valid(self, form):
         cd = form.cleaned_data
         user_update = Profile.objects.filter(pk=self.kwargs['pk']).first().user
-        email = cd.get('email', '')
         username = cd.get('username', '')
         full_name = cd.get('full_name', '')
 
-        if email:
-            user_update.email = email
         if username:
             user_update.username = username
         if full_name:
@@ -85,17 +62,6 @@ class ProfileUpdateView(UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, form.non_field_errors())
         return super().form_invalid(form)
-
-
-class CustomLoginView(LoginView):
-    form_class = CustomAuthenticationForm
-    template_name = 'accounts/registration/signin.html'
-
-    def get(self, request, *args, **kwargs):
-        if self.request.user.id:
-            redirect_url = reverse_lazy('main:index')
-            return HttpResponseRedirect(redirect_url)
-        return super().get(request, *args, **kwargs)
 
 
 class CustomPasswordResetView(auth_views.PasswordResetView):

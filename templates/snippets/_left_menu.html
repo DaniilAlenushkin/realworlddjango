@@ -22,7 +22,7 @@
                 <li><a href="{{ user.profile.get_absolute_url }}">Мой аккаунт</a></li>
                 <li><a href="{% url 'accounts:password_change' %}">Изменить пароль</a></li>
                 <li><a href="{% url 'accounts:password_reset' %}">Сбросить пароль</a></li>
-                <li><a href="{% url 'accounts:logout' %}" >Выйти</a></li>
+                <li><a href="{% url 'account_logout' %}" >Выйти</a></li>
             {% else %}
                 <span>Аккаунт: - </span>
             {% endif %}
