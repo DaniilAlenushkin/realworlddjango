@@ -9,6 +9,11 @@
             <h1>Войти</h1>
             <hr>
             <p>У вас нет аккаунта? <a href="{% url 'account_signup' %}">Зарегистрируйтесь</a></p>
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+               {{ form.non_field_errors }}
+            </div>
+            {% endif %}
             <form action="." method="post">
                 {% csrf_token %}
                 {{form.login.label_tag}}

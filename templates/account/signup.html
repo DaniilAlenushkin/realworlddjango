@@ -9,7 +9,11 @@
             <h1>Создайте свою учетную запись</h1>
             <hr>
             <p>У вас уже есть аккаунт? <a href="{% url 'account_login' %}">Войти</a></p>
-            {{ form.non_field_errors }}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+               {{ form.non_field_errors }}
+            </div>
+            {% endif %}
             <form action="." method="post">
                 {% csrf_token %}
                 {% for field in form %}
