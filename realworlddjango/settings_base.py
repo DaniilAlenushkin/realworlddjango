@@ -12,7 +12,6 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -137,7 +136,7 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/'
 
-
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
@@ -149,15 +148,21 @@ EMAIL_USE_SSL = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Static
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'assets',
-]
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'assets',
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / 'collectstatic'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'collectstatic')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# Media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
+# All-auth
 SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -169,8 +174,6 @@ ACCOUNT_FORMS = {
     'signup': 'accounts.forms.CustomUserCreationForm',
     'sociallogin': 'allauth.socialaccount.forms.SignupForm',
 }
-
-MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -186,14 +189,7 @@ INTERNAL_IPS = [
 sentry_sdk.init(
     dsn=env('dsn'),
     integrations=[DjangoIntegration()],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
     traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
 
