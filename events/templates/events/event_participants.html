@@ -18,12 +18,12 @@
 
                 {% for enroll in event.enrolls.all %}
                     <tr>
-                        <th data-test="enroll_counter">{{ forloop.counter }}</th>
-                        <td data-test="enroll_user">{{ enroll.user.first_name|default:"-" }} {{ enroll.user.last_name|default:"-"}}</td>
-                        <td data-test="enroll_email">{{ enroll.user.email }} {{event.reviews.user.all}}</td>
+                        <th>{{ forloop.counter }}</th>
+                        <td>{{ enroll.user.first_name|default:"-" }} {{ enroll.user.last_name|default:"-"}}</td>
+                        <td>{{ enroll.user.email }} {{event.reviews.user.all}}</td>
                     {% for review in event.reviews.all %}
                         {% if enroll.user == review.user %}
-                            <td data-test="enroll_rate">{{review.rate}}</td>
+                            <td>{{review.rate}}</td>
                         {% endif %}
                     {% endfor %}
                     </tr>

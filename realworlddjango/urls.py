@@ -20,6 +20,8 @@ from django.urls import include, path
 from django.conf.urls import url
 from django.views.static import serve
 
+from .yasg import urlpatterns as doc_url
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
@@ -42,6 +44,8 @@ urlpatterns += [
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 ]
+
+urlpatterns += doc_url
 
 if settings.DEBUG:
     from django.conf.urls.static import static

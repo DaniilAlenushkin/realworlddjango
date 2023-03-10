@@ -86,11 +86,11 @@
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
                                         <td>
-                                            <a href="{{enroll.event.get_absolute_url}}" data-test="event">
+                                            <a href="{{enroll.event.get_absolute_url}}" >
                                                {{ enroll.event }}
                                             </a>
                                         </td>
-                                        <td data-test="event_start">{{ enroll.event.date_start|date:"d.m.Y" }}</td>
+                                        <td>{{ enroll.event.date_start|date:"d.m.Y" }}</td>
                                         <td>
                                         <form action="{{enroll.get_delete_url}}" method="post">
                                         {% csrf_token %}
@@ -128,14 +128,14 @@
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
                                         <td>
-                                            <a href="{{review.event.get_absolute_url}}" data-test="review_event">
+                                            <a href="{{review.event.get_absolute_url}}" >
                                                 {{ review.event }}
                                             </a>
                                         </td>
-                                        <td data-test="review_text">
+                                        <td>
                                             {{ review.text|truncatewords:4  }}
                                         </td>
-                                        <td data-test="review_rate">{{ review.rate}}</td>
+                                        <td>{{ review.rate}}</td>
                                         <td>
                                         <form action="{{review.get_delete_url}}" method="post">
                                         {% csrf_token %}
@@ -171,7 +171,7 @@
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
                                         <td>
-                                            <a href="{{favorite.event.get_absolute_url}}" data-test="review_event">
+                                            <a href="{{favorite.event.get_absolute_url}}" >
                                                 {{ favorite.event }}
                                             </a>
                                         <td>

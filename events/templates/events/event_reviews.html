@@ -6,12 +6,12 @@
 
         <div class="card-body">
             <!-- Start Review item -->
-            <h5 class="me-2" data-test="review_user">
+            <h5 class="me-2" >
                 {{ review.user.first_name }} {{ review.user.last_name }}
-                <span class="badge bg-warning" data-test="review_rate" > {{ review.rate }}</span>
+                <span class="badge bg-warning" > {{ review.rate }}</span>
             </h5>
-            <p class="my-3" data-test="review_text">{{ review.text }}</p>
-            <p class="mb-4" data-test="review_created">{{ review.created|date:"d.m.Y" }}</p>
+            <p class="my-3" >{{ review.text }}</p>
+            <p class="mb-4" >{{ review.created|date:"d.m.Y" }}</p>
             <!-- End Review item -->
         </div>
     {% endfor %}

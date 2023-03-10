@@ -22,19 +22,19 @@
                                 </div>
                                 <div class="col-lg-6 col-xl-7">
                                     {%if event.is_private%}
-                                        <p data-test="is_private" class="badge bg-dark">Private</p>
+                                        <p class="badge bg-dark">Private</p>
                                     {%endif%}
-                                    <h2 data-test="event_title">{{event.title}}</h2>
+                                    <h2>{{event.title}}</h2>
                                     {% if event.get_rate %}
-                                    <p data-test="event_rate" class="badge bg-warning">{{event.get_rate|floatformat}}/5</p>
+                                    <p class="badge bg-warning">{{event.get_rate|floatformat}}/5</p>
                                     {% else %}
-                                    <p data-test="event_rate" class="badge bg-warning">Оценок еще нет!</p>
+                                    <p class="badge bg-warning">Оценок еще нет!</p>
                                     {% endif %}
-                                    <h5 data-test="event_category" class="mt-3">{{event.category}}</h5>
-                                    <p data-test="event_description" class="my-4">{{event.description}}</p>
+                                    <h5 class="mt-3">{{event.category}}</h5>
+                                    <p class="my-4">{{event.description}}</p>
                                     <ul>
                                         {% for feature in event.features.all %}
-                                            <li data-test="feature">{{feature}}</li>
+                                            <li>{{feature}}</li>
                                         {% endfor %}
                                     </ul>
                                     <p>
@@ -44,9 +44,8 @@
                                         <form action="{% url 'events:enroll_create' %}" method="post" class="me-2">
                                         {% csrf_token %}
                                             {{enroll_form}}
-                                             <button data-test="enroll"
-                                                    type="submit"
-                                                    class="btn btn-success"
+                                             <button type="submit"
+                                                     class="btn btn-success"
                                                     {% if user in event|get_enroll_user %}
                                                                 disabled>
                                                                 Вы записаны
@@ -91,10 +90,10 @@
                                         </div>
                                         <div class="card-body">
                                             <i class="bi bi-emoji-smile text-success" style="font-size: 3rem"></i>
-                                            <h4 data-test="enroll_count">
+                                            <h4>
                                                 {{event.count}} из {{event.participants_number}}
                                             </h4>
-                                            <p data-test="places_left">
+                                            <p>
                                                 {%if event.places_left == 0 %}
                                                     осталось мест: мест нет
                                                 {%else%}
@@ -102,8 +101,7 @@
                                                 {%endif%}
                                             </p>
                                             <div class="progress" style="height: 5px;">
-                                                <div data-test="progressbar"
-                                                     class="progress-bar bg-success"
+                                                <div class="progress-bar bg-success"
                                                      role="progressbar"
                                                      style="width: {% widthratio event.count event.participants_number 100 %}%"
                                                      aria-valuenow="{% widthratio event.count event.participants_number 100 %}"
@@ -164,10 +162,10 @@
                             </div>
                             <div class="card-body">
                                 <img src="{% static 'images/users/men.svg' %}" class="img-fluid me-3" alt="user">
-                                <p data-test="review_text" class="mb-0 d-inline">
+                                <p class="mb-0 d-inline">
                                     {{review.text}}
                                 </p>
-                                <p data-test="review_date" class="mt-3">{{review.created|date:"d.m.Y" }}</p>
+                                <p class="mt-3">{{review.created|date:"d.m.Y" }}</p>
                             </div>
                         </div>
                     {%endfor%}
@@ -234,10 +232,10 @@
                             </div>
                             <div class="card-body">
                                 <img src="{% static 'images/users/men.svg' %}" class="img-fluid me-3" alt="user">
-                                <p data-test="review_text" class="mb-0 d-inline">
+                                <p class="mb-0 d-inline">
                                     ` + text + `
                                 </p>
-                                <p data-test="review_date" class="mt-3">` + created + `</p>
+                                <p class="mt-3">` + created + `</p>
                             </div>
                         </div>`
                     addNewReview('', newReviewInnerHTML)

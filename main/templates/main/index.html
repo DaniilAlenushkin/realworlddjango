@@ -25,7 +25,7 @@
 
             <!-- Start EVENT_ITEM -->
             {% for event in event_list %}
-            <div class="col" data-test="event">
+            <div class="col" >
                 <div class="card mb-3 h-100 shadow">
                     <div class="card-body">
                         <div class="row g-0">
@@ -36,7 +36,7 @@
                                 <h5 class="card-title">{{event.title}}</h5>
                                 <p class="card-text">{{event.description|truncatechars:200 }}</p>
                                 <p class="card-text">
-                                    <small class="text-muted" data-test="event_start">
+                                    <small class="text-muted" >
                                         {{ event.date_start|date:"j E Y" }}
                                     </small>
                                 </p>
@@ -66,12 +66,12 @@
         <div class="row row-cols-1 row-cols-lg-3 row-cols-xxl-4 justify-content-center g-4 mt-4">
             <!-- Start REVIEW_ITEM -->
             {% for review in review_list %}
-            <div class="col" data-test="review">
+            <div class="col" >
                 <div class="card rounded bg-light pt-4 h-100 text-center">
                     <img src="{% static 'images/svg-icon/rating.svg' %}" class="card-img-top" alt="review"
                          style="max-height: 5rem">
                     <div class="card-body">
-                        <p class="card-text" data-test="review_text">
+                        <p class="card-text" >
                             {{review.text}}
                         </p>
                     </div>

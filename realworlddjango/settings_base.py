@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.vk',
+    'rest_framework',
+    'drf_yasg',
 
     # Project apps
     'main.apps.MainConfig',
@@ -96,6 +98,16 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': '%d.%m.%Y %H:%M',
+}
+
+if not DEBUG:
+    REST_FRAMEWORK |= {
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+        )
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
